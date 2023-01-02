@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mvvm_vidoe_one/res/colors.dart';
 import 'package:mvvm_vidoe_one/utils/routes/routes_name.dart';
 import 'package:mvvm_vidoe_one/utils/utils/Utils.dart';
+
+import '../res/components/round_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -10,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   final ValueNotifier<bool> _obscurePassword = ValueNotifier<bool>(true);
   TextEditingController emailCon = TextEditingController();
   TextEditingController passCon = TextEditingController();
@@ -17,11 +21,23 @@ class _LoginScreenState extends State<LoginScreen> {
   FocusNode PFn = FocusNode();
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    emailCon.dispose();
+    passCon.dispose();
+    EFn.dispose();
+    PFn.dispose();
+    _obscurePassword.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height * 1;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
-        backgroundColor: Colors.teal,
+        title: const Text('Sign Up'),
+        backgroundColor: AppColors.tealColor,
         centerTitle: true,
       ),
       body: Padding(
@@ -38,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: 'Email',
                   prefixIcon: Icon(
                     Icons.email,
-                    color: Colors.teal,
+                    color: AppColors.tealColor,
                   )),
               onFieldSubmitted: (value) {
                 Utils.focusChange(context, EFn, PFn);
@@ -49,47 +65,51 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             ValueListenableBuilder(
                 valueListenable: _obscurePassword,
-                builder: (context,value,child){
+                builder: (context, value, child) {
                   return TextFormField(
                     obscureText: _obscurePassword.value,
                     controller: passCon,
                     focusNode: PFn,
-                    decoration:  InputDecoration(
+                    decoration: InputDecoration(
                         hintText: 'Password',
                         prefixIcon: InkWell(
-                            onTap: (){
-                          _obscurePassword.value = !_obscurePassword.value;
-                        },
-                            child: _obscurePassword.value == true ? Icon(Icons.lock_outline,color: Colors.teal,) :Icon(Icons.lock_open,color: Colors.teal,),
-                        )
-                    ),
-                    onFieldSubmitted: (value){
+                          onTap: () {
+                            _obscurePassword.value = !_obscurePassword.value;
+                          },
+                          child: _obscurePassword.value == true
+                              ? const Icon(
+                                  Icons.lock_outline,
+                                  color: AppColors.tealColor,
+                                )
+                              : const Icon(
+                                  Icons.lock_open,
+                                  color: AppColors.tealColor,
+                                ),
+                        )),
+                    onFieldSubmitted: (value) {
                       FocusScope.of(context).requestFocus();
                     },
                   );
+                }),
+            SizedBox(
+              height: height * .09,
+            ),
+            RoundButton(
+              title: 'Log in',
+              loading: true,
+              color: AppColors.tealColor,
+              onPress: () {
+                if (emailCon.text.isEmpty) {
+                  Utils.flushErrorMsg('Email can`t be empty!!', context);
+                } else if (passCon.text.isEmpty) {
+                  Utils.flushErrorMsg('Password can`t be empty!!', context);
+                } else if (passCon.text.length < 6) {
+                  Utils.flushErrorMsg(
+                      'Password can`t be less then 6 digits!!', context);
+                } else {
+                  print('Api Hit');
                 }
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-            GestureDetector(
-              onTap: () {
-                //Utils.toastMessage('Button Pressed!');
-                //Utils.flushErrorMsg('FlushBar Pressed!',context);
-                //Utils.snackBar('SnackBar Pressed', context);
               },
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.teal,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Center(
-                    child: Text(
-                  'LOG IN',
-                  style: TextStyle(color: Colors.white),
-                )),
-              ),
             ),
           ],
         ),
