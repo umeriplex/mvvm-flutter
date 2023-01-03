@@ -6,7 +6,7 @@ class AppExceptions implements Exception {
 
   @override
   String toString() {
-    return 'E X C E P T I O N{_message: $_message, _prefix: $_prefix}';
+    return 'Exception : $_message, $_prefix';
   }
 }
 

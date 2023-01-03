@@ -20,11 +20,12 @@ class Utils {
         context: context,
         flushbar: Flushbar(
           message: msg,
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
+          borderRadius: BorderRadius.circular(20),
           backgroundColor: Colors.teal,
           titleColor: Colors.white,
-          flushbarPosition: FlushbarPosition.BOTTOM,
-          duration: const Duration(seconds: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 18,vertical: 80),
+          flushbarPosition: FlushbarPosition.TOP,
+          duration: const Duration(seconds: 5),
           icon: const Icon(Icons.report_gmailerrorred_rounded,color: Colors.white,),
         )..show(context)
     );

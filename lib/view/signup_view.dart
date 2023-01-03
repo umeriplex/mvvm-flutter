@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:mvvm_vidoe_one/res/colors.dart';
-import 'package:mvvm_vidoe_one/utils/routes/routes_name.dart';
-import 'package:mvvm_vidoe_one/utils/utils/Utils.dart';
-import 'package:mvvm_vidoe_one/view_model/auth_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../res/colors.dart';
 import '../res/components/round_button.dart';
+import '../utils/utils/Utils.dart';
+import '../view_model/auth_viewmodel.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SignUpView extends StatefulWidget {
+  const SignUpView({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-
+class _SignUpViewState extends State<SignUpView> {
   final ValueNotifier<bool> _obscurePassword = ValueNotifier<bool>(true);
   TextEditingController emailCon = TextEditingController();
   TextEditingController passCon = TextEditingController();
@@ -39,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Log In'),
+        title: const Text('Sign Up'),
         backgroundColor: AppColors.tealColor,
         centerTitle: true,
       ),
@@ -81,13 +79,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           child: _obscurePassword.value == true
                               ? const Icon(
-                                  Icons.lock_outline,
-                                  color: AppColors.tealColor,
-                                )
+                            Icons.lock_outline,
+                            color: AppColors.tealColor,
+                          )
                               : const Icon(
-                                  Icons.lock_open,
-                                  color: AppColors.tealColor,
-                                ),
+                            Icons.lock_open,
+                            color: AppColors.tealColor,
+                          ),
                         )),
                     onFieldSubmitted: (value) {
                       FocusScope.of(context).requestFocus();
@@ -98,8 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
               height: height * .09,
             ),
             RoundButton(
-              title: 'Log In',
-              loading: authViewModel.loading,
+              title: 'Sign Up',
+              loading: authViewModel.sLoading,
               color: AppColors.tealColor,
               onPress: () {
                 if (emailCon.text.isEmpty) {
@@ -114,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     "email": emailCon.text.toString(),
                     "password": passCon.text.toString(),
                   };
-                  authViewModel.login(data,context);
+                  authViewModel.register(data,context);
                   print('Api Hit');
                 }
               },
@@ -123,10 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
               height: height * .02,
             ),
             InkWell(
-              onTap: (){
-                Navigator.pushNamed(context, RoutesName.signup);
-              },
-                child: const Text('Don`t have a account ? SignUp now',style: TextStyle(decoration: TextDecoration.underline),))
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: const Text('Already Registered ? Login now',style: TextStyle(decoration: TextDecoration.underline),))
           ],
         ),
       ),

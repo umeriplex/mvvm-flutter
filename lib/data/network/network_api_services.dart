@@ -30,7 +30,7 @@ class NetworkApiService extends BaseApiServices {
       Response response = await http.post(
           Uri.parse(url),
           body: data
-      ).timeout(Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 10));
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');
